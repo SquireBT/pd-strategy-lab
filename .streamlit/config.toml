@@ -1,0 +1,31 @@
+# App configuration. Safe to commit: nothing secret lives here.
+# Secrets go in .streamlit/secrets.toml, which is gitignored.
+
+[server]
+# Rerun the app whenever a source file is saved. Ignored on Streamlit Cloud.
+runOnSave = true
+
+[browser]
+# Skip the usage-stats call made during startup.
+gatherUsageStats = false
+
+[theme]
+base = "dark"
+primaryColor = "#A78BFA"              # violet: buttons, active states
+backgroundColor = "#150E24"           # deep purple, main canvas
+secondaryBackgroundColor = "#221639"  # cards, tables, widget fills
+textColor = "#EDE9FE"
+linkColor = "#C4B5FD"
+codeBackgroundColor = "#1E1433"
+codeTextColor = "#DDD6FE"
+borderColor = "#3A2A5C"
+dataframeBorderColor = "#3A2A5C"
+dataframeHeaderBackgroundColor = "#2A1C45"
+baseRadius = "0.5rem"
+buttonRadius = "0.5rem"
+showWidgetBorder = true
+
+[theme.sidebar]
+backgroundColor = "#1B1130"
+secondaryBackgroundColor = "#2A1C45"
+borderColor = "#3A2A5C"

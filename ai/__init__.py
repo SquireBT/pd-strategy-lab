@@ -1,0 +1,1 @@
+"""Gemini integration: schemas, prompts, and the client wrapper."""

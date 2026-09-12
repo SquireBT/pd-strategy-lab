@@ -20,7 +20,7 @@ class Move(str, Enum):
     @property
     def short(self) -> str:
         """Single-letter form used in tables and charts."""
-        return "C" if self is Move.COOPERATE else "D"
+        return "C" if self == Move.COOPERATE else "D"
 
     @classmethod
     def parse(cls, raw: object) -> Move:
@@ -66,11 +66,11 @@ class PayoffMatrix:
 
     def payoffs(self, player: Move, opponent: Move) -> tuple[float, float]:
         """Return (player_payoff, opponent_payoff) for one pair of moves."""
-        if player is Move.COOPERATE and opponent is Move.COOPERATE:
+        if player == Move.COOPERATE and opponent == Move.COOPERATE:
             return self.R, self.R
-        if player is Move.COOPERATE and opponent is Move.DEFECT:
+        if player == Move.COOPERATE and opponent == Move.DEFECT:
             return self.S, self.T
-        if player is Move.DEFECT and opponent is Move.COOPERATE:
+        if player == Move.DEFECT and opponent == Move.COOPERATE:
             return self.T, self.S
         return self.P, self.P
 
@@ -139,15 +139,15 @@ class RoundResult:
     @property
     def outcome(self) -> str:
         """Plain-language label for the round."""
-        if self.player_move is self.ai_move:
+        if self.player_move == self.ai_move:
             return (
                 "Mutual cooperation"
-                if self.player_move is Move.COOPERATE
+                if self.player_move == Move.COOPERATE
                 else "Mutual defection"
             )
         return (
             "You exploited the AI"
-            if self.player_move is Move.DEFECT
+            if self.player_move == Move.DEFECT
             else "The AI exploited you"
         )
 

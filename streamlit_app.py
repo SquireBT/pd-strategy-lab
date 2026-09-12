@@ -2,6 +2,9 @@
 
 Deliberately thin. This file wires pages together and does nothing else:
 game rules live in game/, AI calls live in ai/, and each page renders itself.
+
+Page modules are imported inside the dispatch rather than at the top, so
+opening the app only pays for the section actually being shown.
 """
 
 from __future__ import annotations
@@ -15,18 +18,26 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-from ui import play  # noqa: E402  (must follow set_page_config)
-
-PAGES = {
-    "Play": play.render,
-    "Analyze": None,
-    "Learn": None,
-}
+SECTIONS = ["Home", "Play", "Analyze", "Learn"]
 
 
-def _placeholder(name: str) -> None:
-    st.header(name)
-    st.info(f"{name} mode is not built yet.")
+def _render(section: str) -> None:
+    if section == "Home":
+        from ui import home
+
+        home.render()
+    elif section == "Play":
+        from ui import play
+
+        play.render()
+    elif section == "Analyze":
+        from ui import analysis
+
+        analysis.render()
+    elif section == "Learn":
+        from ui import learn
+
+        learn.render()
 
 
 def main() -> None:
@@ -34,18 +45,19 @@ def main() -> None:
         st.title("AI Strategy Lab")
         st.caption("Play games. Learn game theory. Outsmart the AI.")
         st.divider()
-        choice = st.radio("Section", list(PAGES), label_visibility="collapsed")
+        section = st.radio("Section", SECTIONS, label_visibility="collapsed")
+
+        from ui import home
+        from game.games import get_game
+
+        st.caption(f"Game: **{get_game(home.get_game_key()).name}**")
         st.divider()
         st.caption(
-            "Game rules, payoffs and statistics are computed in Python. "
-            "Gemini handles strategy, explanation and teaching."
+            "Rules, payoffs and statistics are computed in Python. Gemini "
+            "plays the adaptive opponent and handles explanation and teaching."
         )
 
-    renderer = PAGES[choice]
-    if renderer is None:
-        _placeholder(choice)
-    else:
-        renderer()
+    _render(section)
 
 
 if __name__ == "__main__":
